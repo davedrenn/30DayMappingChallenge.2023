@@ -1,0 +1,58 @@
+---
+title: "Day1"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(sf)
+library(ggplot2)
+library(arcpullr)
+library(tidycensus)
+library(tigris)
+library(grid)
+library(plotly)
+
+
+```
+
+```{r data}
+parks <- get_spatial_layer("https://services1.arcgis.com/fBc8EJBxQRMcHlei/ArcGIS/rest/services/NPS_Land_Resources_Division_Boundary_and_Tract_Data_Service/FeatureServer/0") %>%
+  dplyr::filter(UNIT_TYPE == "National Park") %>% 
+  dplyr::filter(STATE != "AS" & STATE != "VI") %>%
+  mutate(fullname = paste(PARKNAME, STATE, sep=", ")) %>%
+  shift_geometry() %>%
+  st_transform(crs = "EPSG:5070")
+
+```
+
+```{r map}
+
+us <- states(cb = TRUE, resolution = "20m") %>%
+  shift_geometry() %>%
+  st_transform(crs = "EPSG:5070") 
+
+parksmap <- ggplot()+
+  geom_sf(data=us, color = "white", fill = "grey40", size = .1)+
+  geom_sf(data=parks, aes(text = fullname), color = "olivedrab3") +
+  labs(
+    title = "Interactive Map of US National Parks",
+    subtitle = "Parks in American Samoa and US Virgin Islands not pictured"
+  ) +
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank())
+
+ggplotly(parksmap, dynamicTicks = TRUE, tooltip = c("text"))%>% 
+ layout(title = list(text = paste0('Interactive Map of US National Parks',
+                                    '<br>',
+                                    '<sup>',
+                                    'Parks in American Samoa and US Virgin Islands not pictured',
+                                    '</sup>')))
+
+```
