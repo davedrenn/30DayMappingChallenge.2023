@@ -1,0 +1,43 @@
+---
+title: "Day26"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(sf)
+library(tidyverse)
+
+```
+
+```{r data}
+
+data <- st_read("data/day26/ne_10m_rivers_lake_centerlines.shp")
+
+rivers <- data %>%
+  dplyr::filter(featurecla == "River") %>%
+  st_transform(EPSG=9834)
+
+
+```
+
+```{r map}
+
+ggplot()+
+  geom_sf(data = rivers, color = "lightblue") +
+  labs(title = "rivers",
+       caption = "source: UT Geodata") +
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title=element_text(size=20,face="italic", color = "lightblue", family = "serif", hjust = .5),
+        plot.caption=element_text(size=10, color = "lightblue", family = "serif"), 
+        plot.background = element_rect(fill = 'black'))
+
+
+```
