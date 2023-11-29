@@ -44,21 +44,3 @@ ggplot()+
         plot.caption=element_text(size=10, color = "black"))
 
 ```
-
-```{r map}
-
-ggplot()+
-  geom_sf(data = rivers, color = "lightblue") +
-  labs(title = "rivers",
-       caption = "source: UT Geodata") +
-  theme(legend.position = "none",
-        panel.grid = element_blank(),
-        panel.background = element_blank(),
-        axis.ticks = element_blank(),
-        axis.text = element_blank(),
-        plot.title=element_text(size=20,face="italic", color = "lightblue", family = "serif", hjust = .5),
-        plot.caption=element_text(size=10, color = "lightblue", family = "serif"), 
-        plot.background = element_rect(fill = 'black'))
-
-
-```
