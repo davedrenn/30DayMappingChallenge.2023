@@ -1,0 +1,66 @@
+---
+title: "Untitled"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library}
+library(sf)
+library(tidyverse)
+library(tidycensus)
+library(tigris)
+library(units)
+
+census_api_key("e13d5be5cb48d927009e0dca0af99d21918d514f", overwrite = TRUE)
+
+options(scipen = 999)
+
+```
+
+```{r data}
+us <- get_decennial(
+  geography = "state",
+  year = 2010,
+  variables = "P001001",
+  geometry = TRUE
+  ) %>%
+  st_transform(.,crs = "EPSG:5070") %>%
+  filter(NAME != "Alaska" & NAME != "Hawaii" & NAME != "Puerto Rico" & NAME != "Guam")
+
+roads <- primary_roads() %>%
+  dplyr::filter(RTTYP == "I") %>%
+  dplyr::filter(FULLNAME != "I- H2" & FULLNAME != "I- H-3" & FULLNAME != "I- H-3" &  FULLNAME != "I- H-201" &  FULLNAME != "I- H-2" & FULLNAME != "I- H-1")%>%
+  st_transform(epsg=5070)
+
+roads <- roads %>%
+  group_by(FULLNAME) %>%
+  summarize(geometry = st_union(geometry))%>%
+  mutate(length = st_length(geometry))%>%
+  mutate(length = drop_units(length)*0.000621371)
+
+roads_max <- roads %>%
+  dplyr::filter(length == max(length))
+
+ggplot()+
+  geom_sf(data=us, fill = "black", color = "grey20")+
+  geom_sf(data=roads, color = "white")+
+  geom_sf(data=roads_max, color = "orangered")+
+  labs(title="From Boston to Seattle",
+       subtitle="US Route 20 is the longest US highway at a length of 3,365 miles",
+       caption = "Sources: US Census Bureau; Wikipedia")+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title=element_text(size=14,face="bold", color = "orangered", hjust = .5),
+        plot.subtitle = element_text(size=8,face="bold", color = "white", hjust = .5),
+        plot.caption=element_text(size=6, color = "white"), 
+        plot.background = element_rect(fill = 'black'))
+
+```

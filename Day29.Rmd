@@ -31,7 +31,7 @@ ggplot()+
   geom_sf(data=countries, fill = "grey95", color = "grey80")+
   geom_sf(data=cities_largest, color = "red")+
   geom_sf_text(data=cities_largest, aes(label = name, hjust = 1), nudge_x = -300000, nudge_y = 0)+
-  labs(title = "The Largest Cities by Population of Each Continent",
+  labs(title = "The Largest Cities by Population for Each Continent",
        caption = "Sources: Wikipedia, Natural Earth") +
   theme(legend.position = "none",
         panel.grid = element_blank(),
