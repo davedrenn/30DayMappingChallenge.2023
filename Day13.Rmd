@@ -1,0 +1,65 @@
+---
+title: "day13"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(tigris)
+library(sf)
+library(tidycensus)
+library(ggtext)
+
+
+```
+
+```{r data}
+
+pa_med_rent_state <- get_acs(
+  geography = "state",
+  state = "PA",
+  variables = "B25064_001E",
+  year = 2021,
+  geometry = TRUE
+  ) %>%
+  st_transform(epsg=2272)
+
+pa_med <- pa_med_rent_state$estimate
+
+pa_med_rent_tract <- get_acs(
+  geography = "tract",
+  state = "PA",
+  variables = "B25064_001E",
+  year = 2021,
+  geometry = TRUE
+  ) %>%
+  st_transform(epsg=2272) %>%
+  mutate(med = case_when(
+    estimate >= pa_med ~ "above",
+    estimate < pa_med ~ "below"
+    )
+  ) %>%
+  mutate(across(med, replace_na, "below"))
+
+
+ggplot()+
+  geom_sf(data = pa_med_rent_tract, aes(fill = med), color = NA)+
+  labs(title="<span style='color:#ca0020;'>Above</span> the Median?",
+       subtitle="PA Census tracts above the state median rent cost",
+       fill = "Median Rent",
+       caption = "Sources: US Census Bureau")+
+  scale_fill_manual(values = c("#ca0020","grey90"))+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title = element_markdown(size = 14),
+        plot.subtitle = element_text(size=8, color = "black"),
+        plot.caption=element_text(size=6, color = "black")
+        )
+```
