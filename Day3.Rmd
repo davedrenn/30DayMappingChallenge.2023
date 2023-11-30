@@ -1,5 +1,5 @@
 ---
-title: "PA_Water"
+title: "PA Municipal Water"
 author: "Dave Drennan"
 date: "`r Sys.Date()`"
 output: html_document
@@ -71,14 +71,6 @@ theme_musa <- function(){
 
 ```{r data}
 
-drought_watch = toupper(c("Cameron", "Clinton", "Huntingdon", "Fulton", "Franklin", "Cumberland", "Adams", "Perry", "Dauphin", "Lebanon", "Lancaster", "Northampton", "Bucks", "Montgomery"))
-
-drought_warning = toupper(c("York"))
-
-mandatory_cons = c("1460055", "7360007", "7010055", "7010022", "4180048", "7210013", "4180049", "7670100")
-
-voluntary_cons = c("6120001", "7670076", "3480028", "7280021", "1460048", "1090099", "1090103", "1090097", "1090098", "1090070", "1090101", "1090058", "1090102")
-
 supply <- get_spatial_layer("https://gis.dep.pa.gov/depgisprd/rest/services/emappa/eMapPA_External_Extraction/MapServer/225")
 
 supply <- supply %>%
@@ -90,80 +82,28 @@ pa_state <- get_spatial_layer("https://mapservices.pasda.psu.edu/server/rest/ser
 
 pa_counties <- get_spatial_layer("https://mapservices.pasda.psu.edu/server/rest/services/pasda/PennDOT/MapServer/7")
 
-pa_counties <- pa_counties %>%
-  mutate(watch = ifelse(pa_counties$COUNTY_NAM %in% drought_watch, 1, 0),
-         warning = ifelse(pa_counties$COUNTY_NAM %in% drought_warning, 1, 0),
-         flagged = watch+warning) %>%
-  st_transform(crs=3857)
+ggplot()+
+  geom_sf(data=pa_counties, fill = "grey99", color = "grey90")+
+  geom_sf(data=supply, fill = "#225ea8", color = "darkblue")+
+  geom_sf(data=pa_state, fill = NA, color = "grey")+
+  labs(title="PA has over 700 <span style='color:#225ea8;'>public water systems</span> ",
+       subtitle="Public water systems defined as Authority or Municipal system",
+       caption = "Sources: PA DEP")+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title = element_markdown(size = 14),
+        plot.subtitle = element_text(size=8, color = "black"),
+        plot.caption=element_text(size=6, color = "black")
+        )
 
-supply <- supply %>%
-  st_make_valid(supply)
 
-supply <- st_crop(supply, pa_state)
 
-watch <- pa_counties %>%
-  filter(watch == 1)
 
-warning <- pa_counties %>%
-  filter(warning == 1)
-
-watch_supply <- st_intersection(watch, supply) %>%
-  mutate(count = 1,
-         matching = ifelse(str_to_title(COUNTY_NAM) == CNTY_NAME, 1, 0),
-         voluntary = ifelse(PWS_ID %in% voluntary_cons, 1, 0),
-         mandatory = ifelse(PWS_ID %in% mandatory_cons, 1, 0)) %>%
-  filter(matching == 1)
-
-warning_supply <- st_intersection(warning, supply) %>%
-  mutate(count = 1,
-         matching = ifelse(str_to_title(COUNTY_NAM) == CNTY_NAME, 1, 0),
-         voluntary = ifelse(PWS_ID %in% voluntary_cons, 1, 0),
-         mandatory = ifelse(PWS_ID %in% mandatory_cons, 1, 0)) %>%
-  filter(matching == 1)
-
-drought_supply <- rbind(warning_supply, watch_supply) %>%
-  dplyr::select(COUNTY_NAM, count, voluntary, mandatory)%>%
-  st_drop_geometry()%>%
-  group_by(COUNTY_NAM) %>%
-  summarize(across(everything(), sum)) %>%
-  mutate(cons = voluntary + mandatory,
-         zunrestricted = count - cons)%>%
-  dplyr::select(-count, -cons) %>%
-  gather(., key = "Restrictions", value = "Count", 2:4)
 
 ```
 
-```{r map, fig.height = 5}
-NovMap <- ggplot()+
-  geom_sf(data=pa_counties, fill = "white", color = "grey60")+
-  geom_sf(data=watch, fill = "yellow", color = "grey60")+
-  geom_sf(data=warning, fill = "orange", color = "grey60")+
-  geom_sf(data=watch_supply, fill = "#6666ff", color = "#0066cc")+
-  geom_sf(data=warning_supply, fill = "#6666ff", color = "#0066cc")+
-  geom_sf(data=pa_state, fill = NA, color = "grey60")+
-  labs(title = "Pennsylvania currently has 16 counties under a drought <span style='color:#ffff00;'>watch</span> or <span style='color:#ff6600;'>warning</span><br>which are served by nearly 200 <span style='color:#6666ff;'>public water systems</span> of various sizes",
-       caption = "\nSource: PA DEP Drought Status (11/12/23)") +
-  theme_musa()+
-  theme(plot.title = element_markdown(size = 14),
-        axis.text.x=element_blank(),
-        axis.text.y=element_blank())
-```
-
-```{r hist, fig.height = 5}
-NovPlot <- ggplot(data = drought_supply, aes(x=str_to_title(COUNTY_NAM), y=Count, fill = Restrictions))+
-  geom_bar(position = "stack", stat="identity")+
-  scale_fill_manual(values = c("#990000","#000066", "grey80"))+
-  labs(title = "Water utilities can impose <span style='color:#000066;'>voluntary</span> or <span style='color:#990000;'>mandatory</span> water use restrictions,",
-       subtitle = "but for now, most public systems in PA counties with drought concerns impose no restrictions",
-       caption = "\nSource: PA DEP Drought Status (11/12/23)",
-       x = "",
-       y = "Public Water Systems") +
-  theme_musa()+
-  theme(plot.title = element_markdown(size = 14),
-        axis.text.x = element_text(angle = 45, hjust=1),
-        legend.position = "none")
-
-``` 
 
 
 
