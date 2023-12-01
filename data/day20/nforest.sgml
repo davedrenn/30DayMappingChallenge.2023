@@ -1,0 +1,205 @@
+<!DOCTYPE metadata SYSTEM "metadata.dtd">
+<metadata>
+<idinfo>
+<citation>
+<citeinfo>
+<origin>Environmental Resources Research Institute</origin>
+<pubdate>1996</pubdate>
+<title>National forests in Pennsylvania</title>
+<pubinfo>
+<pubplace>Harrisburg, PA</pubplace>
+<publish>Pennsylvania Department of Environmental Protection</publish>
+</pubinfo>
+<othercit></othercit>
+<onlink>http://www.pasda.psu.edu</onlink>
+<lworkcit>
+<citeinfo>
+<origin>Pennsylvania Department of Environmental Protection</origin>
+<pubdate>199605</pubdate>
+<title>Pennsylvania GIS Compendium</title>
+<pubinfo>
+<pubplace>Harrisburg, PA</pubplace>
+<publish>Pennsylvania Department of Environmental Protections</publish>
+</pubinfo>
+<othercit></othercit>
+<onlink>http://www.dep.state.pa.us</onlink>
+</citeinfo>
+</lworkcit>
+</citeinfo>
+</citation>
+<descript>
+<abstract>
+Boundary information from the office of the Allegheny National Forest,
+taken from 1:24,000 USGS topographic maps.
+</abstract>
+<purpose>educational</purpose>
+</descript>
+<timeperd>
+<timeinfo>
+<sngdate>
+<caldate>1992</caldate>
+</sngdate>
+</timeinfo>
+<current>
+Enviromental Resources Research Institute-produced
+metadata and Pennsylvania GIS Compendium helpfile
+</current>
+</timeperd>
+<status>
+<progress>in work</progress>
+<update>
+areas not mapped when screened at smaller
+scales during low level nuclear waste siting analysi
+</update>
+</status>
+<spdom>
+<bounding>
+<westbc>-80.5181</westbc>
+<eastbc>-74.6170</eastbc>
+<northbc>42.2340</northbc>
+<southbc>39.6930</southbc>
+</bounding>
+</spdom>
+<keywords>
+<theme>
+<themekt>none</themekt>
+<themekey>national forests</themekey>
+</theme>
+<place>
+<placekt>none</placekt>
+<placekey>Pennsylvania</placekey>
+<placekey>Allegheny National Forest</placekey>
+</place>
+</keywords>
+<accconst>none</accconst>
+<useconst>intended scale of use 1:24,000</useconst>
+<ptcontac>
+<cntinfo>
+<cntperp>
+<cntper>George Baumer</cntper>
+<cntorg>Environmental Resources Research Institute</cntorg>
+</cntperp>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>Land and Water Building</address>
+<city>University Park</city>
+<state>PA</state>
+<postal>16802</postal>
+</cntaddr>
+<cntvoice>814-863-5541</cntvoice>
+<cntemail>gmb@psu.edu</cntemail>
+</cntinfo>
+</ptcontac>
+<browse>
+<browsen>National forests in Pennsylvania</browsen>
+<browsed>enlargable thumbnail</browsed>
+<browset>JPEG</browset>
+</browse>
+</idinfo>
+<dataqual>
+<lineage>
+<srcinfo>
+<srccite>
+<citeinfo>
+<origin>Law Environmental Inc.</origin>
+<pubdate>1992</pubdate>
+<title>National forests</title>
+<pubinfo>
+<pubplace></pubplace>
+<publish></publish>
+</pubinfo>
+<othercit></othercit>
+<onlink></onlink>
+</citeinfo>
+</srccite>
+<typesrc>8 mm tape</typesrc>
+<srctime>
+<timeinfo>
+<sngdate>
+<caldate>varies</caldate>
+</sngdate>
+</timeinfo>
+<srccurr>
+telephone call to Dennis Lewis, GIS manager, Law
+Environmental, Inc.  717-561-1633
+</srccurr>
+</srctime>
+<srccitea>none</srccitea>
+<srccontr>
+Law Environmental contracted by the state to conduct a low
+level nuclear waste siting project.  Analysis performed in ARCINFO.  Information
+for the database gathered from several sources including the U.S. Geological
+Survey and tax parcel maps
+</srccontr>
+</srcinfo>
+<procstep>
+<procdesc></procdesc>
+<procdate></procdate>
+</procstep>
+</lineage>
+</dataqual>
+<distinfo>
+<distrib>
+<cntinfo>
+<cntperp>
+<cntorg>Pennsylvania Department of Environmenal Protection</cntorg>
+</cntperp>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>P.O. Box 2063</address>
+<city>Harrisburg</city>
+<state>PA</state>
+<postal>17105</postal>
+</cntaddr>
+<cntvoice>717-783-2300</cntvoice>
+</cntinfo>
+</distrib>
+<distliab>
+Not for commercial use or resale.
+The User shall save the Commonwealth and the Pennsylvania State University
+harmless from any suits, claims or actions arising out of the use of the
+data files or accompanying documentation, or arising out of any defect in
+the data files or accompanying documentation.
+The Commonwealth and the Pennsylvania State University excludes any and all
+implied warranties and makes no warranty or representation with repsect to
+the data files or accompanying documentation, including quality,
+performance, merchantability, or fitness for a particular purpose.
+These data files and documentation are provided -as is- and the User
+assumes the entire risk as to their quality and performance.
+</distliab>
+<stdorder>
+<digform>
+<digtinfo>
+<formname>ARC/INFO Export</formname>
+<formvern>7.0</formvern>
+<formverd>1996</formverd>
+</digtinfo>
+<digtopt></digtopt>
+</digform>
+<fees>none</fees>
+</stdorder>
+</distinfo>
+<metainfo>
+<metd>19960904</metd>
+<metrd>19970111</metrd>
+<metc>
+<cntinfo>
+<cntperp>
+<cntper>Melissa Lamont</cntper>
+<cntorg>The Pennsylvania State University Libraries</cntorg>
+</cntperp>
+<cntaddr>
+<addrtype>mailing address</addrtype>
+<address>Pattee Library</address>
+<city>University Park</city>
+<state>PA</state>
+<postal>16802</postal>
+</cntaddr>
+<cntvoice>814-863-0094</cntvoice>
+<cntemail>mml@psulias.psu.edu</cntemail>
+</cntinfo>
+</metc>
+<metstdn>Content Standards for Digital Spatial Metadata</metstdn>
+<metstdv>19940608</metstdv>
+</metainfo>
+</metadata>

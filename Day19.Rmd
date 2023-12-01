@@ -1,0 +1,49 @@
+---
+title: "Day19"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages}
+
+library(sf)
+library(tidyverse)
+library(tigris)
+library(tidycensus)
+
+census_api_key("e13d5be5cb48d927009e0dca0af99d21918d514f")
+
+```
+
+
+```{r data}
+
+rhodeisland <- get_acs(
+  geography = "tract",
+  variables = "B06011_001E",
+  state = "Rhode Island",
+  geometry = TRUE
+)%>%
+  rename(Median_Income = estimate)%>%
+  st_transform(epsg=3438)
+
+ggplot()+
+  geom_sf(data=rhodeisland, aes(fill=Median_Income))+
+  labs(title="Rhode Island",
+      subtitle="Median Income by Census Tract",
+       fill = "Med Inc ($)",
+       caption = "Sources: US Census Bureau")+
+  theme(panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title=element_text(size=16,face="bold", hjust = .5),
+        plot.subtitle = element_text(size=10, hjust = .5),
+        plot.caption=element_text(size=6))
+
+```

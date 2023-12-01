@@ -1,0 +1,55 @@
+---
+title: "Day20"
+author: "Dave Drennan"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages}
+
+library(sf)
+library(tidyverse)
+library(tigris)
+
+```
+
+```{r data}
+
+pa <- states()%>%
+  dplyr::filter(NAME == "Pennsylvania")%>%
+  st_transform(epsg=3857)
+
+state <- st_read("data/day20/DCNR_StateParks201703.shp")%>%
+  st_transform(epsg=3857)
+
+local <- st_read("data/day20/DCNR_LocalPark202306.shp")%>%
+  st_transform(epsg=3857)
+
+national <- st_read("data/day20/nforest.shp")%>%
+  st_transform(epsg=3857)
+
+forests <- st_read("data/day20/DCNR_BOF_StateForests202306.shp")%>%
+  st_transform(epsg=3857)
+
+ggplot()+
+  geom_sf(data=pa, fill="white")+
+  geom_sf(data=forests, fill = "darkgreen", color = "darkgreen")+
+  geom_sf(data=national, fill = "darkgreen", color = "darkgreen")+
+  geom_sf(data=state,fill = "orangered", color = "orangered")+
+  labs(title="Penn's Woods",
+       subtitle="Parks and Forests of Pennsylvania",
+       caption = "State and National Forests in Green, State Parks in Orange\nSources: PASDA")+
+  theme(legend.position = "none",
+        panel.grid = element_blank(),
+        panel.background = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text = element_blank(),
+        plot.title=element_text(size=30,face="bold", color = "white", hjust = 1),
+        plot.subtitle = element_text(size=12,face="bold", color = "white", hjust = 1),
+        plot.caption=element_text(size=8, color = "white"), 
+        plot.background = element_rect(fill = 'black'))
+```
